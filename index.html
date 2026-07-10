@@ -1,0 +1,1246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="color-scheme" content="dark">
+    <title>Dynein-2 exhibit</title>
+    <style>
+        :root {
+            --bg: #090d14;
+            --panel: #121923;
+            --panel-2: #161f2c;
+            --panel-3: #1c2635;
+            --ink: #eef3fa;
+            --muted: #a5afbf;
+            --line: #2a3548;
+            --line-soft: rgba(255,255,255,0.08);
+            --header: #0c1118;
+            --shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+            --adppi: #ff8c88;
+            --adp: #87adff;
+            --apo: #ffd56a;
+            --atp: #2d3443;
+            --visual-size: clamp(190px, min(17vw, 25vh), 270px);
+            --app-height: 100dvh;
+        }
+
+        * { box-sizing: border-box; }
+
+        html, body { height: var(--app-height); }
+
+        body {
+            margin: 0;
+            background: radial-gradient(circle at top, #111827 0%, var(--bg) 55%, #05070b 100%);
+            color: var(--ink);
+            font-family: Inter, "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+            overflow: hidden;
+            color-scheme: dark;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 10px;
+            background: linear-gradient(90deg, #05080e, #141b27 50%, #05080e);
+            color: #fff;
+            padding: 10px 14px;
+            box-shadow: var(--shadow);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            flex: 0 0 auto;
+        }
+
+        .header-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            min-width: 0;
+            width: 100%;
+        }
+
+        .header-nav,
+        .header-actions {
+            display: flex;
+            flex-direction: row;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: nowrap;
+            min-width: 0;
+        }
+
+        .header-nav {
+            justify-content: flex-start;
+        }
+
+        .header-actions {
+            justify-content: flex-end;
+            margin-left: auto;
+            z-index: 2;
+        }
+
+        .header-button {
+            width: auto;
+            min-width: 164px;
+            height: 42px;
+            border: 1px solid rgba(255,255,255,0.14);
+            background: rgba(255,255,255,0.07);
+            color: #fff;
+            font: inherit;
+            font-size: 0.82rem;
+            font-weight: 850;
+            padding: 0 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.16);
+            touch-action: manipulation;
+            white-space: nowrap;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .header-button:active { transform: translateY(1px); }
+        .header-button:focus-visible {
+            outline: 3px solid rgba(135, 173, 255, 0.45);
+            outline-offset: 2px;
+        }
+
+        .header-button.is-secondary {
+            background: rgba(135, 173, 255, 0.12);
+        }
+
+        .header-button.is-tab {
+            min-width: 190px;
+            background: rgba(255,255,255,0.05);
+            border-color: rgba(255,255,255,0.13);
+        }
+
+        .header-button.is-tab.is-active {
+            background: rgba(135, 173, 255, 0.18);
+            border-color: rgba(135, 173, 255, 0.35);
+            box-shadow: 0 0 0 1px rgba(135, 173, 255, 0.08), 0 4px 12px rgba(0,0,0,0.18);
+        }
+
+        main {
+            width: min(1780px, calc(100% - 24px));
+            margin: 0 auto;
+            padding: 10px 0 10px;
+            height: calc(var(--app-height) - 58px);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            min-height: 0;
+        }
+
+        .top-grid {
+            flex: 1 1 auto;
+            min-height: 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .condition {
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 13px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+        }
+
+        .condition-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            flex: 0 0 auto;
+        }
+
+        .condition-title {
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: var(--muted);
+            letter-spacing: 0.01em;
+        }
+
+        .condition-title-block {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 3px;
+            min-width: 0;
+        }
+
+        .flux-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 8px;
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            background: linear-gradient(180deg, var(--panel-3), var(--panel));
+            box-shadow: 0 4px 14px rgba(0,0,0,0.22);
+            white-space: nowrap;
+        }
+
+        .flux-pill span {
+            color: var(--muted);
+            font-size: 0.78rem;
+            font-weight: 800;
+        }
+
+        .flux-pill input {
+            width: 56px;
+            border: 0;
+            outline: none;
+            background: transparent;
+            color: var(--ink);
+            font: inherit;
+            font-size: 1rem;
+            font-weight: 850;
+            text-align: center;
+            padding: 0;
+            appearance: textfield;
+            -moz-appearance: textfield;
+        }
+
+        .flux-pill input::-webkit-outer-spin-button,
+        .flux-pill input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .flux-stepper {
+            width: 42px;
+            height: 42px;
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 13px;
+            background: linear-gradient(180deg, #202b3a, #151d29);
+            color: var(--ink);
+            font-size: 1.55rem;
+            font-weight: 950;
+            line-height: 1;
+            display: inline-grid;
+            place-items: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.18);
+            touch-action: manipulation;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        .flux-stepper:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        .flux-stepper:focus-visible {
+            outline: 3px solid rgba(135, 173, 255, 0.45);
+            outline-offset: 2px;
+        }
+
+        .chart-shell {
+            flex: 1 1 auto;
+            min-height: 0;
+            display: grid;
+            grid-template-columns: minmax(170px, 0.78fr) minmax(230px, 1.22fr);
+            gap: clamp(16px, 2vw, 36px);
+            align-items: center;
+            justify-items: center;
+            padding: 4px 8px 6px;
+        }
+
+        .visual-stack {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            min-width: 0;
+        }
+
+        .cartoon {
+            width: min(100%, clamp(92px, 8.5vw, 142px));
+            max-width: 142px;
+            height: auto;
+            display: block;
+            object-fit: contain;
+            opacity: 0.96;
+        }
+
+        .umap-stage,
+        .pie-stage {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-width: 0;
+        }
+
+        .umap-plot,
+        .pie-chart {
+            width: min(100%, var(--visual-size));
+            aspect-ratio: 1;
+            display: block;
+            overflow: hidden;
+            border-radius: 12px;
+        }
+
+        .visual-stack .umap-stage .umap-plot {
+            width: min(100%, clamp(160px, min(12vw, 22vh), 220px));
+        }
+
+        .pie-stage .pie-chart {
+            width: min(100%, var(--visual-size));
+        }
+
+        .umap-plot {
+            background: #ffffff;
+            border: 1px solid rgba(0,0,0,0.14);
+        }
+
+        .umap-title {
+            width: 100%;
+            text-align: center;
+            font-size: 0.9rem;
+            font-weight: 850;
+            color: var(--muted);
+            letter-spacing: 0.02em;
+            line-height: 1;
+            margin: 0 0 2px;
+        }
+
+        .pie-chart {
+            background: transparent;
+        }
+
+        .pie-chart path,
+        .pie-chart circle {
+            stroke: #f7f8fb;
+            stroke-width: 1.6;
+            vector-effect: non-scaling-stroke;
+        }
+
+        .umap-stage,
+        .pie-stage {
+            position: relative;
+            width: min(100%, calc(var(--visual-size) + 44px));
+            aspect-ratio: 1;
+            padding: 22px;
+        }
+
+        .pie-stage .pie-chart,
+        .pie-stage .boundary-layer {
+            position: absolute;
+            inset: 22px;
+            width: auto;
+            height: auto;
+        }
+
+        .umap-stage::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: 12px;
+            pointer-events: none;
+        }
+
+        .boundary-layer {
+            position: absolute;
+            inset: 0;
+            overflow: visible;
+            z-index: 6;
+            pointer-events: none;
+        }
+
+        .boundary-handle {
+            pointer-events: auto;
+        }
+
+        .boundary-handle {
+            position: absolute;
+            width: 34px;
+            height: 34px;
+            margin: 0;
+            padding: 0;
+            border: 1px solid rgba(255,255,255,0.16);
+            border-radius: 999px;
+            background: rgba(247, 249, 252, 0.98);
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.28);
+            display: grid;
+            place-items: center;
+            cursor: grab;
+            touch-action: none;
+            transform: translate(-50%, -50%) translate(var(--stack-x, 0px), var(--stack-y, 0px));
+            transition: box-shadow 120ms ease, transform 120ms ease;
+        }
+
+        .boundary-handle::before {
+            content: "";
+            width: 11px;
+            height: 11px;
+            border-radius: 999px;
+            background: #b8bec8;
+        }
+
+        .boundary-handle::after {
+            content: "";
+            position: absolute;
+            inset: -8px;
+            border-radius: 999px;
+            border: 1px solid currentColor;
+            opacity: 0.22;
+        }
+
+        .boundary-handle:active { cursor: grabbing; }
+        .boundary-handle.is-dragging {
+            z-index: 80;
+            box-shadow: 0 14px 30px rgba(0, 0, 0, 0.38);
+        }
+
+        .hint {
+            color: var(--muted);
+            font-size: 0.8rem;
+            text-align: center;
+            margin: 0;
+            line-height: 1.1;
+        }
+
+        .table-panel {
+            flex: 0 0 auto;
+            background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            min-height: 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+
+        col.state-col { width: 18%; }
+        col.pop-col { width: 15%; }
+        col.rate-col { width: 16%; }
+        col.stim-col { width: 21%; }
+
+        thead th {
+            background: rgba(255,255,255,0.04);
+            color: var(--ink);
+            font-size: 0.76rem;
+            font-weight: 850;
+            text-align: center;
+            padding: 8px 6px;
+            border-bottom: 1px solid var(--line);
+            white-space: normal;
+            line-height: 1.06;
+        }
+
+        thead th:first-child { text-align: left; padding-left: 12px; }
+
+        tbody td {
+            padding: 8px 6px;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            vertical-align: middle;
+            font-size: 0.8rem;
+            text-align: center;
+            line-height: 1.05;
+        }
+
+        tbody td:first-child {
+            text-align: left;
+            padding-left: 12px;
+        }
+
+        tbody tr:last-child td { border-bottom: 0; }
+
+        .state-cell {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            font-weight: 850;
+        }
+
+        .state-swatch {
+            width: 20px;
+            height: 20px;
+            border-radius: 5px;
+            border: 1px solid rgba(255,255,255,0.12);
+            flex: 0 0 auto;
+        }
+
+        .metric {
+            white-space: nowrap;
+            font-variant-numeric: tabular-nums;
+            font-weight: 750;
+        }
+
+        .metric.dim {
+            color: var(--muted);
+            font-weight: 650;
+        }
+
+        thead th:nth-child(6),
+        tbody td:nth-child(6) {
+            background: rgba(135, 173, 255, 0.065);
+        }
+
+        thead th:nth-child(6) {
+            box-shadow: inset 0 -1px 0 rgba(255,255,255,0.05);
+        }
+
+        .table-note {
+            display: none;
+        }
+
+        @media (max-width: 980px) and (orientation: portrait) {
+            :root { --visual-size: clamp(170px, min(42vw, 19vh), 230px); }
+            main {
+                width: min(100% - 14px, 1320px);
+                padding: 8px 0 8px;
+                gap: 8px;
+            }
+            .top-grid {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+            .condition {
+                padding: 9px;
+                gap: 6px;
+            }
+            .condition-head {
+                gap: 6px;
+                align-items: flex-start;
+            }
+            .condition-title { font-size: 0.9rem; }
+            .condition-title-block { gap: 4px; }
+            .cartoon { width: min(100%, 88px); max-width: 88px; }
+            .visual-stack .umap-stage .umap-plot { width: min(100%, 155px); }
+            .chart-shell {
+                grid-template-columns: minmax(130px, 0.78fr) minmax(190px, 1.22fr);
+                gap: 10px;
+                padding: 2px 4px 4px;
+            }
+            .flux-pill { padding: 5px 7px; gap: 5px; }
+            .flux-stepper { width: 39px; height: 39px; }
+            .flux-pill input { width: 52px; font-size: 0.96rem; }
+            .pie-stage { padding: 19px; }
+            .pie-stage .pie-chart,
+            .pie-stage .boundary-layer { inset: 19px; }
+            .boundary-handle { width: 30px; height: 30px; }
+            .boundary-handle::before { width: 9px; height: 9px; }
+            .boundary-handle::after { inset: -7px; }
+            .hint { display: none; }
+            thead th { font-size: 0.7rem; padding: 7px 4px; }
+            tbody td { font-size: 0.73rem; padding: 7px 4px; }
+            thead th:first-child, tbody td:first-child { padding-left: 10px; }
+            .state-swatch { width: 18px; height: 18px; }
+            .state-cell { gap: 7px; }
+        }
+
+        @media (max-width: 1100px) and (orientation: landscape) {
+            :root { --visual-size: clamp(220px, min(18vw, 31vh), 300px); }
+            header { padding: 8px 14px 9px; }
+            main {
+                width: min(100% - 16px, 1780px);
+                padding: 8px 0 8px;
+                gap: 8px;
+            }
+            .top-grid { gap: 8px; }
+            .condition { padding: 11px; gap: 7px; }
+            .condition-title { font-size: 0.9rem; }
+            .condition-title-block { gap: 4px; }
+            .header-button {
+                min-width: 150px;
+                height: 38px;
+                font-size: 0.78rem;
+                padding: 0 14px;
+            }
+            .header-button.is-tab {
+                min-width: 170px;
+            }
+            .cartoon { width: min(100%, 120px); max-width: 120px; }
+            .visual-stack .umap-stage .umap-plot { width: min(100%, 205px); }
+            .chart-shell {
+                grid-template-columns: minmax(190px, 0.8fr) minmax(250px, 1.2fr);
+                gap: 12px;
+                padding-top: 0;
+            }
+            .flux-pill { padding: 5px 7px; }
+            .flux-stepper { width: 40px; height: 40px; }
+            .pie-chart path,
+            .pie-chart circle { stroke-width: 1.5; }
+            .boundary-handle { width: 32px; height: 32px; }
+            .boundary-handle::before { width: 10px; height: 10px; }
+            .boundary-handle::after { inset: -7px; }
+            thead th { font-size: 0.72rem; padding: 7px 5px; }
+            tbody td { font-size: 0.76rem; padding: 7px 5px; }
+            .state-swatch { width: 18px; height: 18px; }
+        }
+
+        @media (min-width: 1101px) and (min-height: 760px) {
+            .top-grid {
+                flex: 0 1 auto;
+                min-height: min(64vh, 620px);
+            }
+
+            .condition {
+                min-height: min(64vh, 620px);
+            }
+
+            tbody td {
+                padding-top: 10px;
+                padding-bottom: 10px;
+            }
+        }
+
+        @media (max-width: 520px) {
+            .header-inner {
+                gap: 6px;
+            }
+            .header-nav,
+            .header-actions {
+                gap: 5px;
+            }
+            .header-button { min-width: 134px; height: 38px; font-size: 0.76rem; padding: 0 12px; }
+            .header-button.is-tab {
+                min-width: 136px;
+            }
+            .pie-stage { margin-top: 10px; }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div class="header-inner">
+        <div class="header-nav" aria-label="Page navigation">
+            <button type="button" class="header-button is-tab is-active" aria-label="Current kinetic approximation page">Kinetic approximation</button>
+            <button type="button" class="header-button is-tab is-secondary" onclick="location.href='cryodrgn.html'" aria-label="Open cryoDRGN page">cryoDRGN</button>
+            <button type="button" class="header-button is-tab is-secondary" onclick="location.href='conformations.html'" aria-label="Open conformations page">conformations</button>
+        </div>
+        <div class="header-actions" aria-label="Preset controls">
+            <button type="button" id="reset-button" class="header-button" aria-label="Restore absolute values">Absolute values</button>
+            <button type="button" id="adp98-button" class="header-button is-secondary" aria-label="Set microtubule bound condition to 98 percent ADP">98 % ADP</button>
+            <button type="button" id="adp100-button" class="header-button is-secondary" aria-label="Set microtubule bound condition to 100 percent ADP">100 % ADP</button>
+        </div>
+    </div>
+</header>
+
+<main>
+    <section class="top-grid" aria-label="Kinetic conditions">
+        <article class="condition" data-condition="basal">
+            <div class="condition-head">
+                <div class="condition-title-block">
+                    <div class="condition-title">Microtubules absent</div>
+                </div>
+                <label class="flux-pill" aria-label="Microtubules absent rate">
+                    <span>k<sub>basal</sub></span>
+                    <button type="button" class="flux-stepper" data-target="basal-flux" data-delta="-0.1" aria-label="Decrease microtubules absent rate">&minus;</button>
+                    <input id="basal-flux" type="number" min="0" step="0.1" value="1.0">
+                    <button type="button" class="flux-stepper" data-target="basal-flux" data-delta="0.1" aria-label="Increase microtubules absent rate">+</button>
+                    <span>s<sup>&minus;1</sup></span>
+                </label>
+            </div>
+            <div class="chart-shell">
+                <div class="visual-stack">
+                    <img src="off-mt-cartoon.svg" class="cartoon" alt="Microtubules absent schematic">
+                    <div class="umap-title">UMAP</div>
+                    <div class="umap-stage">
+                        <canvas id="basal-umap" class="umap-plot" role="img" aria-label="Microtubules absent UMAP example distribution"></canvas>
+                    </div>
+                </div>
+                <div class="pie-stage">
+                    <svg id="basal-pie" class="pie-chart" viewBox="-1 -1 2 2" role="img" aria-labelledby="basal-pie-title"></svg>
+                    <div id="basal-boundaries" class="boundary-layer" aria-label="Microtubules absent boundary handles"></div>
+                </div>
+            </div>
+        </article>
+
+        <article class="condition" data-condition="mt">
+            <div class="condition-head">
+                <div class="condition-title-block">
+                    <div class="condition-title">Microtubules present</div>
+                </div>
+                <label class="flux-pill" aria-label="Microtubules present rate">
+                    <span>k<sub>cat</sub></span>
+                    <button type="button" class="flux-stepper" data-target="mt-flux" data-delta="-0.1" aria-label="Decrease microtubules present rate">&minus;</button>
+                    <input id="mt-flux" type="number" min="0" step="0.1" value="4.0">
+                    <button type="button" class="flux-stepper" data-target="mt-flux" data-delta="0.1" aria-label="Increase microtubules present rate">+</button>
+                    <span>s<sup>&minus;1</sup></span>
+                </label>
+            </div>
+            <div class="chart-shell">
+                <div class="visual-stack">
+                    <img src="on-mt-cartoon.svg" class="cartoon" alt="Microtubules present schematic">
+                    <div class="umap-title">UMAP</div>
+                    <div class="umap-stage">
+                        <canvas id="mt-umap" class="umap-plot" role="img" aria-label="Microtubules present UMAP example distribution"></canvas>
+                    </div>
+                </div>
+                <div class="pie-stage">
+                    <svg id="mt-pie" class="pie-chart" viewBox="-1 -1 2 2" role="img" aria-labelledby="mt-pie-title"></svg>
+                    <div id="mt-boundaries" class="boundary-layer" aria-label="Microtubules present boundary handles"></div>
+                </div>
+            </div>
+        </article>
+    </section>
+
+    <section class="table-panel" aria-label="Updating values table">
+        <table>
+            <colgroup>
+                <col class="state-col">
+                <col class="pop-col">
+                <col class="pop-col">
+                <col class="rate-col">
+                <col class="rate-col">
+                <col class="stim-col">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th>State</th>
+                    <th>Off MT %</th>
+                    <th>On MT %</th>
+                    <th>Onward rate off MTs</th>
+                    <th>Onward rate on MTs</th>
+                    <th>MT stimulation</th>
+                </tr>
+            </thead>
+            <tbody id="summary-body"></tbody>
+        </table>
+    </section>
+</main>
+
+<script>
+    const states = [
+        { key: "adppi", label: "ADP.Pi", color: "#ff8c88", rateName: "Pi release", transition: "ADP.Pi to ADP" },
+        { key: "adp", label: "ADP", color: "#87adff", rateName: "ADP release", transition: "ADP to Apo" },
+        { key: "apo", label: "Apo", color: "#ffd56a", rateName: "ATP binding", transition: "Apo to ATP" },
+        { key: "atp", label: "ATP", color: "#2d3443", rateName: "Hydrolysis", transition: "ATP to ADP.Pi" }
+    ];
+
+    const DEFAULTS = {
+        basal: { values: { adppi: 15, adp: 82, apo: 3, atp: 0 }, flux: 1.0 },
+        mt: { values: { adppi: 3, adp: 91, apo: 6, atp: 0 }, flux: 4.0 }
+    };
+
+    const conditions = {
+        basal: {
+            fluxInput: document.getElementById("basal-flux"),
+            pie: document.getElementById("basal-pie"),
+            umapCanvas: document.getElementById("basal-umap"),
+            boundaryLayer: document.getElementById("basal-boundaries"),
+            values: { adppi: 15, adp: 82, apo: 3, atp: 0 },
+            boundaries: [15, 97]
+        },
+        mt: {
+            fluxInput: document.getElementById("mt-flux"),
+            pie: document.getElementById("mt-pie"),
+            umapCanvas: document.getElementById("mt-umap"),
+            boundaryLayer: document.getElementById("mt-boundaries"),
+            values: { adppi: 3, adp: 91, apo: 6, atp: 0 },
+            boundaries: [3, 94]
+        }
+    };
+
+    const activeDrag = { conditionKey: null, boundaryIndex: null };
+
+    function updateViewportHeight() {
+        document.documentElement.style.setProperty("--app-height", `${window.innerHeight}px`);
+    }
+
+    function clamp(value, min, max) {
+        return Math.min(Math.max(value, min), max);
+    }
+
+    function fmtNumber(value, digits = 1) {
+        if (Math.abs(value) >= 100) return value.toFixed(0);
+        if (Math.abs(value) >= 10) return value.toFixed(1);
+        return value.toFixed(digits);
+    }
+
+    function fmtRate(value) {
+        if (!Number.isFinite(value)) return "very fast";
+        return `${fmtNumber(value, 2)} s<sup>&minus;1</sup>`;
+    }
+
+    function fmtFold(value) {
+        if (!Number.isFinite(value)) return "very large";
+        return `${fmtNumber(value, 1)} &times;`;
+    }
+
+    function polarToCartesian(angle) {
+        return [Math.cos(angle), Math.sin(angle)];
+    }
+
+    function piePath(startFraction, endFraction) {
+        const startAngle = startFraction * Math.PI * 2 - Math.PI / 2;
+        const endAngle = endFraction * Math.PI * 2 - Math.PI / 2;
+        const [sx, sy] = polarToCartesian(startAngle);
+        const [ex, ey] = polarToCartesian(endAngle);
+        const largeArc = endFraction - startFraction > 0.5 ? 1 : 0;
+        return `M 0 0 L ${sx} ${sy} A 1 1 0 ${largeArc} 1 ${ex} ${ey} Z`;
+    }
+
+    function boundariesFromValues(values) {
+        return [values.adppi, values.adppi + values.adp];
+    }
+
+    function valuesFromBoundaries(boundaries) {
+        const [b1, b2] = boundaries;
+        return {
+            adppi: clamp(b1, 0, 100),
+            adp: clamp(b2 - b1, 0, 100),
+            apo: clamp(100 - b2, 0, 100),
+            atp: 0
+        };
+    }
+
+    function syncConditionValues(condition) {
+        condition.values = valuesFromBoundaries(condition.boundaries);
+    }
+
+    function setBoundary(conditionKey, boundaryIndex, newFraction) {
+        const condition = conditions[conditionKey];
+        const previous = boundaryIndex === 0 ? 0 : condition.boundaries[boundaryIndex - 1];
+        const next = boundaryIndex === condition.boundaries.length - 1 ? 100 : condition.boundaries[boundaryIndex + 1];
+        condition.boundaries[boundaryIndex] = clamp(newFraction, previous, next);
+        syncConditionValues(condition);
+        render();
+    }
+
+    function angleToFraction(clientX, clientY, rect) {
+        const x = clientX - (rect.left + rect.width / 2);
+        const y = clientY - (rect.top + rect.height / 2);
+        let fraction = (Math.atan2(y, x) + Math.PI / 2) / (Math.PI * 2);
+        if (fraction < 0) fraction += 1;
+        return fraction * 100;
+    }
+
+    function inferredRates(condition) {
+        const flux = Math.max(Number.parseFloat(condition.fluxInput.value) || 0, 0);
+        return states.reduce((rates, state) => {
+            const population = condition.values[state.key];
+            rates[state.key] = population <= 0 || flux <= 0 ? Infinity : flux / (population / 100);
+            return rates;
+        }, {});
+    }
+
+    function hashString(value) {
+        let hash = 2166136261 >>> 0;
+        for (let i = 0; i < value.length; i += 1) {
+            hash ^= value.charCodeAt(i);
+            hash = Math.imul(hash, 16777619);
+        }
+        return hash >>> 0;
+    }
+
+    function createRng(seed) {
+        let t = seed >>> 0;
+        return function rng() {
+            t += 0x6D2B79F5;
+            let x = t;
+            x = Math.imul(x ^ (x >>> 15), x | 1);
+            x ^= x + Math.imul(x ^ (x >>> 7), x | 61);
+            return ((x ^ (x >>> 14)) >>> 0) / 4294967296;
+        };
+    }
+
+    function resizeCanvas(canvas) {
+        const rect = canvas.getBoundingClientRect();
+        const dpr = Math.max(window.devicePixelRatio || 1, 1);
+        const width = Math.max(1, Math.round(rect.width * dpr));
+        const height = Math.max(1, Math.round(rect.height * dpr));
+        if (canvas.width !== width || canvas.height !== height) {
+            canvas.width = width;
+            canvas.height = height;
+        }
+        return { width, height, dpr };
+    }
+
+    function distributeParticleCounts(weights, totalParticles = 1000) {
+        const visible = weights.map(({ key, value }) => ({ key, value: Math.max(0, value) }));
+        const sum = visible.reduce((acc, item) => acc + item.value, 0);
+        if (sum <= 0) {
+            return visible.map(item => ({ key: item.key, count: 0 }));
+        }
+        const scaled = visible.map(item => {
+            const exact = (item.value / sum) * totalParticles;
+            return { key: item.key, floor: Math.floor(exact), frac: exact - Math.floor(exact) };
+        });
+        let assigned = scaled.reduce((acc, item) => acc + item.floor, 0);
+        let remainder = totalParticles - assigned;
+        scaled.sort((a, b) => b.frac - a.frac).forEach(item => {
+            if (remainder > 0) {
+                item.floor += 1;
+                remainder -= 1;
+            }
+        });
+        return scaled.sort((a, b) => visible.findIndex(v => v.key === a.key) - visible.findIndex(v => v.key === b.key))
+            .map(item => ({ key: item.key, count: item.floor }));
+    }
+
+    function renderUMAP(conditionKey, condition) {
+        const canvas = condition.umapCanvas;
+        const ctx = canvas.getContext('2d');
+        const { width, height, dpr } = resizeCanvas(canvas);
+        ctx.clearRect(0, 0, width, height);
+
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, width, height);
+
+        const padLeft = Math.round(0.06 * Math.min(width, height));
+        const padRight = Math.round(0.06 * Math.min(width, height));
+        const padTop = Math.round(0.06 * Math.min(width, height));
+        const padBottom = Math.round(0.06 * Math.min(width, height));
+        const plotX = padLeft;
+        const plotY = padTop;
+        const plotW = width - padLeft - padRight;
+        const plotH = height - padTop - padBottom;
+        ctx.save();
+        ctx.strokeStyle = 'rgba(0,0,0,0.12)';
+        ctx.lineWidth = Math.max(1, 1 * dpr);
+        ctx.strokeRect(plotX, plotY, plotW, plotH);
+        ctx.strokeStyle = 'rgba(0,0,0,0)';
+        ctx.beginPath();
+        for (let i = 1; i < 3; i += 1) {
+            const gx = plotX + (plotW * i / 3);
+            const gy = plotY + (plotH * i / 3);
+            ctx.moveTo(gx, plotY);
+            ctx.lineTo(gx, plotY + plotH);
+            ctx.moveTo(plotX, gy);
+            ctx.lineTo(plotX + plotW, gy);
+        }
+        ctx.stroke();
+        ctx.restore();
+
+        const clusters = [
+            { key: 'adppi', label: 'ADP.Pi', color: states[0].color, x10: 5.0, y10: 7.1, r: 0.18 },
+            { key: 'adp', label: 'ADP', color: states[1].color, x10: 2.1, y10: 4.9, r: 0.18 },
+            { key: 'apo', label: 'Apo', color: states[2].color, x10: 6.6, y10: 3.3, r: 0.18 }
+        ];
+
+        const toPlotCoords = (x10, y10) => ({
+            x: plotX + (x10 / 10) * plotW,
+            y: plotY + (1 - (y10 / 10)) * plotH
+        });
+
+        clusters.forEach(cluster => {
+            const { x: cx, y: cy } = toPlotCoords(cluster.x10, cluster.y10);
+            const radius = cluster.r * Math.min(plotW, plotH);
+            ctx.save();
+            ctx.strokeStyle = cluster.color;
+            ctx.globalAlpha = 0.70;
+            ctx.lineWidth = Math.max(1.5, 1.5 * dpr);
+            ctx.setLineDash([4 * dpr, 5 * dpr]);
+            ctx.beginPath();
+            ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+            ctx.stroke();
+            ctx.setLineDash([]);
+            ctx.restore();
+
+            ctx.save();
+            ctx.fillStyle = 'rgba(0,0,0,0.68)';
+            ctx.font = `${Math.round(9 * dpr)}px Inter, Segoe UI, sans-serif`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'bottom';
+            ctx.fillText(cluster.label, cx, cy - radius - 4 * dpr);
+            ctx.restore();
+        });
+
+        const rng = createRng(hashString(`${conditionKey}:${condition.values.adppi},${condition.values.adp},${condition.values.apo}`));
+        const particleCounts = distributeParticleCounts([
+            { key: 'adppi', value: condition.values.adppi },
+            { key: 'adp', value: condition.values.adp },
+            { key: 'apo', value: condition.values.apo }
+        ], 1000);
+        const pointRadius = Math.max(0.42 * dpr, 0.35);
+        const totalParticles = 1000;
+        particleCounts.forEach(({ key, count }) => {
+            const cluster = clusters.find(c => c.key === key);
+            if (!cluster || count <= 0) return;
+            const { x: cx, y: cy } = toPlotCoords(cluster.x10, cluster.y10);
+            const radius = cluster.r * Math.min(plotW, plotH) * 0.84;
+            const occupancy = count / totalParticles;
+            const sigma = radius * (0.18 + 0.05 * Math.min(1, occupancy / 0.4));
+            for (let i = 0; i < count; i += 1) {
+                const u1 = Math.max(rng(), 1e-7);
+                const u2 = rng();
+                const mag = Math.sqrt(-2 * Math.log(u1)) * sigma;
+                const theta = u2 * Math.PI * 2;
+                let x = cx + Math.cos(theta) * mag;
+                let y = cy + Math.sin(theta) * mag;
+                const dist = Math.hypot(x - cx, y - cy);
+                if (dist > radius) {
+                    const scale = (radius * 0.98) / dist;
+                    x = cx + (x - cx) * scale;
+                    y = cy + (y - cy) * scale;
+                }
+                ctx.beginPath();
+                ctx.fillStyle = '#111111';
+                ctx.globalAlpha = 0.92;
+                ctx.arc(x, y, pointRadius, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        });
+
+    }
+
+    function buildStaticUi() {
+        Object.entries(conditions).forEach(([conditionKey, condition]) => {
+            condition.pie.innerHTML = `<title id="${conditionKey}-pie-title">${conditionKey} conformational population pie chart</title>`;
+
+            condition.boundaries.forEach((_, boundaryIndex) => {
+                const handle = document.createElement("button");
+                handle.type = "button";
+                handle.className = "boundary-handle";
+                handle.dataset.condition = conditionKey;
+                handle.dataset.boundaryIndex = String(boundaryIndex);
+                handle.setAttribute("aria-label", `${states[boundaryIndex].label} boundary`);
+                handle.addEventListener("pointerdown", startBoundaryDrag);
+                handle.addEventListener("keydown", event => nudgeBoundaryWithKeyboard(event, conditionKey, boundaryIndex));
+                condition.boundaryLayer.appendChild(handle);
+            });
+
+            condition.fluxInput.addEventListener("input", render);
+        });
+
+        document.querySelectorAll(".flux-stepper").forEach(button => {
+            button.addEventListener("click", () => {
+                const targetId = button.dataset.target;
+                const delta = Number.parseFloat(button.dataset.delta || "0");
+                const input = document.getElementById(targetId);
+                const current = Number.parseFloat(input.value || "0") || 0;
+                const next = Math.max(0, current + delta);
+                input.value = (Math.round(next * 10) / 10).toFixed(1);
+                input.dispatchEvent(new Event("input", { bubbles: true }));
+            });
+        });
+
+        document.getElementById("reset-button").addEventListener("click", resetToDefaults);
+        document.getElementById("adp100-button").addEventListener("click", setMtToADP100);
+        document.getElementById("adp98-button").addEventListener("click", setMtToADP98);
+        window.addEventListener("resize", () => {
+            updateViewportHeight();
+            render();
+        });
+        window.addEventListener("orientationchange", () => {
+            updateViewportHeight();
+            setTimeout(render, 50);
+        });
+    }
+
+    function startBoundaryDrag(event) {
+        event.preventDefault();
+        const handle = event.currentTarget;
+        const conditionKey = handle.dataset.condition;
+        const boundaryIndex = Number.parseInt(handle.dataset.boundaryIndex, 10);
+        activeDrag.conditionKey = conditionKey;
+        activeDrag.boundaryIndex = boundaryIndex;
+        handle.classList.add("is-dragging");
+        handle.setPointerCapture(event.pointerId);
+        window.addEventListener("pointermove", onBoundaryDragMove);
+        window.addEventListener("pointerup", endBoundaryDrag, { once: true });
+        updateBoundaryFromPointer(event, conditionKey, boundaryIndex);
+    }
+
+    function onBoundaryDragMove(event) {
+        if (activeDrag.conditionKey === null) return;
+        updateBoundaryFromPointer(event, activeDrag.conditionKey, activeDrag.boundaryIndex);
+    }
+
+    function endBoundaryDrag() {
+        if (activeDrag.conditionKey === null) return;
+        const condition = conditions[activeDrag.conditionKey];
+        const handle = condition.boundaryLayer.querySelector(`.boundary-handle[data-boundary-index="${activeDrag.boundaryIndex}"]`);
+        if (handle) handle.classList.remove("is-dragging");
+        window.removeEventListener("pointermove", onBoundaryDragMove);
+        activeDrag.conditionKey = null;
+        activeDrag.boundaryIndex = null;
+    }
+
+    function updateBoundaryFromPointer(event, conditionKey, boundaryIndex) {
+        const condition = conditions[conditionKey];
+        const rect = condition.pie.getBoundingClientRect();
+        const fraction = angleToFraction(event.clientX, event.clientY, rect);
+        setBoundary(conditionKey, boundaryIndex, fraction);
+    }
+
+    function nudgeBoundaryWithKeyboard(event, conditionKey, boundaryIndex) {
+        const keys = ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Home", "End"];
+        if (!keys.includes(event.key)) return;
+        event.preventDefault();
+
+        const condition = conditions[conditionKey];
+        const step = event.shiftKey ? 2 : 1;
+        let next = condition.boundaries[boundaryIndex];
+
+        if (event.key === "ArrowLeft" || event.key === "ArrowDown") next -= step;
+        if (event.key === "ArrowRight" || event.key === "ArrowUp") next += step;
+        if (event.key === "Home") next = boundaryIndex === 0 ? 0 : condition.boundaries[boundaryIndex - 1];
+        if (event.key === "End") next = boundaryIndex === condition.boundaries.length - 1 ? 100 : condition.boundaries[boundaryIndex + 1];
+
+        setBoundary(conditionKey, boundaryIndex, next);
+    }
+
+    function renderPie(conditionKey, condition) {
+        condition.pie.innerHTML = `<title id="${conditionKey}-pie-title">${conditionKey} conformational population pie chart</title>`;
+        let cursor = 0;
+
+        states.forEach(state => {
+            const value = condition.values[state.key];
+            if (value <= 0) return;
+            const slice = document.createElementNS("http://www.w3.org/2000/svg", value >= 100 ? "circle" : "path");
+            if (value >= 100) {
+                slice.setAttribute("cx", "0");
+                slice.setAttribute("cy", "0");
+                slice.setAttribute("r", "1");
+            } else {
+                slice.setAttribute("d", piePath(cursor / 100, (cursor + value) / 100));
+            }
+            slice.setAttribute("fill", state.color);
+            slice.setAttribute("aria-label", `${state.label}: ${value.toFixed(0)} percent`);
+            condition.pie.appendChild(slice);
+            cursor += value;
+        });
+
+        if (cursor <= 0) {
+            const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+            circle.setAttribute("cx", "0");
+            circle.setAttribute("cy", "0");
+            circle.setAttribute("r", "1");
+            circle.setAttribute("fill", "#222a36");
+            condition.pie.appendChild(circle);
+        }
+    }
+
+    function renderBoundaryHandles(condition) {
+        const handles = Array.from(condition.boundaryLayer.querySelectorAll(".boundary-handle"));
+        const layerRect = condition.boundaryLayer.getBoundingClientRect();
+        const centerX = layerRect.width / 2;
+        const centerY = layerRect.height / 2;
+        const radius = Math.max(0, Math.min(layerRect.width, layerRect.height) / 2 + 18);
+        const positions = handles.map((handle, boundaryIndex) => {
+            const fraction = condition.boundaries[boundaryIndex] / 100;
+            const angle = fraction * Math.PI * 2 - Math.PI / 2;
+            const xPx = centerX + Math.cos(angle) * radius;
+            const yPx = centerY + Math.sin(angle) * radius;
+            return { handle, boundaryIndex, angle, xPx, yPx };
+        });
+
+        const threshold = 42;
+        const visited = new Set();
+        const clusters = [];
+
+        for (const item of positions) {
+            if (visited.has(item.boundaryIndex)) continue;
+            const cluster = [item];
+            visited.add(item.boundaryIndex);
+            let grew = true;
+            while (grew) {
+                grew = false;
+                for (const candidate of positions) {
+                    if (visited.has(candidate.boundaryIndex)) continue;
+                    const near = cluster.some(member => Math.hypot(candidate.xPx - member.xPx, candidate.yPx - member.yPx) < threshold);
+                    if (near) {
+                        cluster.push(candidate);
+                        visited.add(candidate.boundaryIndex);
+                        grew = true;
+                    }
+                }
+            }
+            clusters.push(cluster);
+        }
+
+        clusters.forEach(cluster => {
+            const ordered = [...cluster].sort((a, b) => a.boundaryIndex - b.boundaryIndex);
+            ordered.forEach((item, stackIndex) => {
+                const stack = stackIndex * 40;
+                item.handle.style.left = `${item.xPx}px`;
+                item.handle.style.top = `${item.yPx}px`;
+                item.handle.style.setProperty("--stack-x", `0px`);
+                item.handle.style.setProperty("--stack-y", `${-stack}px`);
+                item.handle.style.color = states[item.boundaryIndex].color;
+                item.handle.style.zIndex = String(20 + stackIndex);
+                item.handle.title = `${states[item.boundaryIndex].label} -> ${states[item.boundaryIndex + 1].label}: ${condition.boundaries[item.boundaryIndex].toFixed(0)}%`;
+            });
+        });
+    }
+
+    function renderTable(allRates) {
+        const body = document.getElementById("summary-body");
+        body.innerHTML = "";
+
+        states.forEach(state => {
+            const basalRate = allRates.basal[state.key];
+            const mtRate = allRates.mt[state.key];
+            const fold = Number.isFinite(basalRate) && basalRate > 0 && Number.isFinite(mtRate)
+                ? mtRate / basalRate
+                : Infinity;
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td>
+                    <span class="state-cell"><span class="state-swatch" style="background:${state.color}"></span>${state.label}</span>
+                </td>
+                <td class="metric">${conditions.basal.values[state.key].toFixed(0)}%</td>
+                <td class="metric">${conditions.mt.values[state.key].toFixed(0)}%</td>
+                <td class="metric">${fmtRate(basalRate)}</td>
+                <td class="metric">${fmtRate(mtRate)}</td>
+                <td class="metric">${fmtFold(fold)}</td>
+            `;
+            body.appendChild(row);
+        });
+    }
+
+    function resetToDefaults() {
+        Object.entries(DEFAULTS).forEach(([conditionKey, preset]) => {
+            const condition = conditions[conditionKey];
+            condition.fluxInput.value = preset.flux.toFixed(1);
+            condition.values = {
+                adppi: preset.values.adppi,
+                adp: preset.values.adp,
+                apo: preset.values.apo,
+                atp: 0
+            };
+            condition.boundaries = boundariesFromValues(condition.values);
+        });
+        render();
+    }
+
+    function setMtToADP100() {
+        const condition = conditions.mt;
+        condition.values = { adppi: 0, adp: 100, apo: 0, atp: 0 };
+        condition.boundaries = boundariesFromValues(condition.values);
+        render();
+    }
+
+    function setMtToADP98() {
+        const condition = conditions.mt;
+        condition.values = { adppi: 1, adp: 98, apo: 1, atp: 0 };
+        condition.boundaries = boundariesFromValues(condition.values);
+        render();
+    }
+
+    function render() {
+        const allRates = {};
+        Object.entries(conditions).forEach(([conditionKey, condition]) => {
+            syncConditionValues(condition);
+            renderUMAP(conditionKey, condition);
+            renderPie(conditionKey, condition);
+            renderBoundaryHandles(condition);
+            allRates[conditionKey] = inferredRates(condition);
+        });
+        renderTable(allRates);
+    }
+
+    updateViewportHeight();
+    buildStaticUi();
+    render();
+</script>
+</body>
+</html>
