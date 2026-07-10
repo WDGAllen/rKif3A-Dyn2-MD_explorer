@@ -1125,9 +1125,10 @@
     function renderBoundaryHandles(condition) {
         const handles = Array.from(condition.boundaryLayer.querySelectorAll(".boundary-handle"));
         const layerRect = condition.boundaryLayer.getBoundingClientRect();
-        const centerX = layerRect.width / 2;
-        const centerY = layerRect.height / 2;
-        const radius = Math.max(0, Math.min(layerRect.width, layerRect.height) / 2);
+        const pieRect = condition.pie.getBoundingClientRect();
+        const centerX = (pieRect.left - layerRect.left) + (pieRect.width / 2);
+        const centerY = (pieRect.top - layerRect.top) + (pieRect.height / 2);
+        const radius = Math.max(0, Math.min(pieRect.width, pieRect.height) / 2 / 1.02);
         const positions = handles.map((handle, boundaryIndex) => {
             const fraction = condition.boundaries[boundaryIndex] / 100;
             const angle = fraction * Math.PI * 2 - Math.PI / 2;
