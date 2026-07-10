@@ -285,7 +285,6 @@
             width: min(100%, var(--visual-size));
             aspect-ratio: 1;
             display: block;
-            overflow: hidden;
             border-radius: 12px;
         }
 
@@ -300,6 +299,7 @@
         .umap-plot {
             background: #ffffff;
             border: 1px solid rgba(0,0,0,0.14);
+            overflow: hidden;
         }
 
         .umap-title {
@@ -315,6 +315,8 @@
 
         .pie-chart {
             background: transparent;
+            overflow: visible;
+            border-radius: 0;
         }
 
         .pie-chart path,
@@ -330,6 +332,7 @@
             width: min(100%, calc(var(--visual-size) + 44px));
             aspect-ratio: 1;
             padding: 22px;
+            overflow: visible;
         }
 
         .pie-stage .pie-chart,
@@ -656,7 +659,7 @@
                     </div>
                 </div>
                 <div class="pie-stage">
-                    <svg id="basal-pie" class="pie-chart" viewBox="-1 -1 2 2" role="img" aria-labelledby="basal-pie-title"></svg>
+                    <svg id="basal-pie" class="pie-chart" viewBox="-1.02 -1.02 2.04 2.04" role="img" aria-labelledby="basal-pie-title"></svg>
                     <div id="basal-boundaries" class="boundary-layer" aria-label="Microtubules absent boundary handles"></div>
                 </div>
             </div>
@@ -684,7 +687,7 @@
                     </div>
                 </div>
                 <div class="pie-stage">
-                    <svg id="mt-pie" class="pie-chart" viewBox="-1 -1 2 2" role="img" aria-labelledby="mt-pie-title"></svg>
+                    <svg id="mt-pie" class="pie-chart" viewBox="-1.02 -1.02 2.04 2.04" role="img" aria-labelledby="mt-pie-title"></svg>
                     <div id="mt-boundaries" class="boundary-layer" aria-label="Microtubules present boundary handles"></div>
                 </div>
             </div>
@@ -1124,7 +1127,7 @@
         const layerRect = condition.boundaryLayer.getBoundingClientRect();
         const centerX = layerRect.width / 2;
         const centerY = layerRect.height / 2;
-        const radius = Math.max(0, Math.min(layerRect.width, layerRect.height) / 2 + 18);
+        const radius = Math.max(0, Math.min(layerRect.width, layerRect.height) / 2);
         const positions = handles.map((handle, boundaryIndex) => {
             const fraction = condition.boundaries[boundaryIndex] / 100;
             const angle = fraction * Math.PI * 2 - Math.PI / 2;
