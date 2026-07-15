@@ -281,9 +281,9 @@
         </div>
 
         <div class="header-right" aria-label="Subpage navigation">
+            <a class="header-button is-secondary" href="?view=overview" data-view-link="overview">overview</a>
             <a class="header-button is-secondary" href="?view=atp" data-view-link="atp">ATP</a>
             <a class="header-button is-secondary" href="?view=mt-atp" data-view-link="mt-atp">MT-ATP</a>
-            <a class="header-button is-secondary" href="?view=occupancy" data-view-link="occupancy">occupancy</a>
         </div>
     </div>
 </header>
@@ -327,13 +327,6 @@
         </div>
         <p class="media-note">The timeline is native browser video controls, so it can be dragged like QuickTime or YouTube.</p>
     </section>
-
-    <section class="media-panel" aria-label="occupancy image section" data-view-panel="occupancy" hidden>
-        <h2 class="media-title">occupancy.png</h2>
-        <div class="media-frame">
-            <img src="occupancy.png" alt="occupancy plot">
-        </div>
-    </section>
 </main>
 
 <script>
@@ -344,7 +337,7 @@
     function getView() {
         const params = new URLSearchParams(window.location.search);
         const view = params.get("view");
-        return ["overview", "atp", "mt-atp", "occupancy"].includes(view) ? view : "overview";
+        return ["overview", "atp", "mt-atp"].includes(view) ? view : "overview";
     }
 
     function activateView(view) {
@@ -360,12 +353,11 @@
 
             if (video && source) {
                 if (shouldShow) {
-                    if (source.dataset.src) {
-                        source.setAttribute("src", source.dataset.src);
-                    }
+                    source.src = source.dataset.src;
                     video.load();
                 } else {
                     video.pause();
+                    video.removeAttribute("src");
                     source.removeAttribute("src");
                     video.load();
                 }
