@@ -1,3 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="color-scheme" content="dark">
+    <title>cryoDRGN</title>
+    <style>
+        :root {
+            --bg: #090d14;
+            --panel: #121923;
+            --panel-2: #161f2c;
+            --panel-3: #1c2635;
+            --ink: #eef3fa;
+            --muted: #a5afbf;
+            --line: #2a3548;
+            --shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+            --app-height: 100dvh;
+            --header-h: 62px;
+        }
+
+        * { box-sizing: border-box; }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        html, body {
+            min-height: var(--app-height);
+        }
+
+        body {
+            margin: 0;
+            background: radial-gradient(circle at top, #111827 0%, var(--bg) 55%, #05070b 100%);
+            color: var(--ink);
+            font-family: Inter, "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+            overflow-x: hidden;
+            overflow-y: auto;
+            color-scheme: dark;
+        }
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            background: linear-gradient(90deg, #05080e, #141b27 50%, #05080e);
+            color: #fff;
+            padding: 10px 14px;
+            box-shadow: var(--shadow);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            min-height: var(--header-h);
+        }
+
+        .header-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            width: 100%;
+            min-width: 0;
+        }
+
+        .header-left,
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-width: 0;
+            flex-wrap: nowrap;
+        }
+
+        .header-right {
+            margin-left: auto;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+        }
+
+        .header-button {
+            width: auto;
+            min-width: 190px;
+            height: 42px;
+            border: 1px solid rgba(255,255,255,0.14);
+            background: rgba(255,255,255,0.07);
+            color: #fff;
+            font: inherit;
+            font-size: 0.82rem;
+            font-weight: 850;
+            padding: 0 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.16);
+            touch-action: manipulation;
+            white-space: nowrap;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .header-button:active {
+            transform: translateY(1px);
+        }
+
+        .header-button:focus-visible {
+            outline: 3px solid rgba(135, 173, 255, 0.45);
+            outline-offset: 2px;
+        }
+
+        .header-button.is-secondary {
+            background: rgba(135, 173, 255, 0.12);
+        }
+
+        .header-button.is-active {
+            background: rgba(135, 173, 255, 0.18);
+            border-color: rgba(135, 173, 255, 0.35);
+        }
+
+        .header-right .header-button {
+            min-width: 86px;
+            width: 86px;
+            padding: 0 8px;
+            font-size: 0.41rem;
+            letter-spacing: 0.02em;
+        }
+
+        main {
+            width: min(1600px, calc(100% - 24px));
+            margin: 0 auto;
+            padding: 12px 0 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .media-panel {
+            background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            box-shadow: var(--shadow);
+            padding: clamp(10px, 1.2vw, 18px);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            min-height: clamp(460px, 78vh, 920px);
+            scroll-margin-top: calc(var(--header-h) + 18px);
+        }
+
+        .media-title {
+            margin: 0;
+            font-size: 0.92rem;
+            font-weight: 850;
+            color: var(--muted);
+            letter-spacing: 0.02em;
+        }
+
+        .media-frame {
+            flex: 1 1 auto;
+            min-height: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 14px;
+            overflow: hidden;
+            background: #fff;
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .media-frame img,
+        .media-frame video {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            object-position: center center;
+            background: #fff;
+        }
+
+        .media-frame video {
+            cursor: pointer;
+            background: #000;
+        }
+
+        .video-shell .media-frame {
+            background: #000;
+        }
+
+        .video-shell .media-frame video {
+            background: #000;
+        }
+
+        .media-note {
+            margin: 0;
+            color: var(--muted);
+            font-size: 0.82rem;
+            line-height: 1.2;
+        }
+
+        [hidden] {
+            display: none !important;
+        }
+
+        @media (max-width: 980px) and (orientation: portrait),
+               (max-width: 1100px) and (orientation: landscape) {
+            main {
+                width: min(100% - 16px, 1600px);
+                padding: 10px 0 18px;
+                gap: 10px;
+            }
+
+            .media-panel {
+                min-height: clamp(380px, 72vh, 820px);
+                padding: 10px;
+            }
+
+            .header-button {
+                min-width: 170px;
+                height: 38px;
+                font-size: 0.78rem;
+                padding: 0 14px;
+            }
+
+            .header-right .header-button {
+                min-width: 78px;
+                width: 78px;
+                padding: 0 6px;
+                font-size: 0.39rem;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .header-inner {
+                gap: 6px;
+                flex-wrap: wrap;
+            }
+
+            .header-right {
+                width: 100%;
+                justify-content: flex-end;
+            }
+
+            .header-left,
+            .header-right {
+                gap: 6px;
+            }
+        }
+
+        @media (max-width: 520px) {
+            .header-button {
+                min-width: 134px;
+                height: 38px;
+                font-size: 0.76rem;
+                padding: 0 12px;
+            }
+
+            .header-right .header-button {
+                min-width: 72px;
+                width: 72px;
+                padding: 0 5px;
+                font-size: 0.38rem;
+            }
+
+            main {
+                width: min(100% - 12px, 1600px);
+            }
+
+            .media-panel {
+                min-height: clamp(320px, 68vh, 760px);
+            }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div class="header-inner">
+        <div class="header-left" aria-label="Page navigation">
+            <button type="button" class="header-button is-secondary" onclick="location.href='index.html'">Kinetic approximation</button>
+            <button type="button" class="header-button is-secondary is-active" aria-current="page">cryoDRGN</button>
+            <button type="button" class="header-button is-secondary" onclick="location.href='conformations.html'">conformations</button>
+        </div>
+
+        <div class="header-right" aria-label="Subpage navigation">
+            <a class="header-button is-secondary" href="?view=atp" data-view-link="atp">ATP</a>
+            <a class="header-button is-secondary" href="?view=mt-atp" data-view-link="mt-atp">MT-ATP</a>
+            <a class="header-button is-secondary" href="?view=occupancy" data-view-link="occupancy">occupancy</a>
+        </div>
+    </div>
+</header>
+
+<main>
+    <section class="media-panel" aria-label="cryoDRGN overview" data-view-panel="overview">
+        <h2 class="media-title">cryodrgn.svg</h2>
+        <div class="media-frame">
+            <img src="cryodrgn.svg" alt="cryoDRGN figure">
+        </div>
+    </section>
+
+    <section class="media-panel video-shell" aria-label="ATP video section" data-view-panel="atp" hidden>
+        <h2 class="media-title">ATP.mp4</h2>
+        <div class="media-frame">
+            <video
+                controls
+                playsinline
+                preload="none"
+                data-click-to-play
+                aria-label="ATP.mp4 video">
+                <source data-src="ATP.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+        <p class="media-note">Use the built-in controls at the bottom for play/pause and dragging the timeline.</p>
+    </section>
+
+    <section class="media-panel video-shell" aria-label="MT-ATP video section" data-view-panel="mt-atp" hidden>
+        <h2 class="media-title">MT-ATP.mp4</h2>
+        <div class="media-frame">
+            <video
+                controls
+                playsinline
+                preload="none"
+                data-click-to-play
+                aria-label="MT-ATP.mp4 video">
+                <source data-src="MT-ATP.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+        <p class="media-note">The timeline is native browser video controls, so it can be dragged like QuickTime or YouTube.</p>
+    </section>
+
+    <section class="media-panel" aria-label="occupancy image section" data-view-panel="occupancy" hidden>
+        <h2 class="media-title">occupancy.png</h2>
+        <div class="media-frame">
+            <img src="occupancy.png" alt="occupancy plot">
+        </div>
+    </section>
+</main>
+
 <script>
     function updateViewportHeight() {
         document.documentElement.style.setProperty("--app-height", `${window.innerHeight}px`);
@@ -22,16 +360,12 @@
 
             if (video && source) {
                 if (shouldShow) {
-                    if (!video.getAttribute("src") && source.dataset.src) {
-                        video.setAttribute("src", source.dataset.src);
-                    }
-                    if (!video.querySelector("source[src]") && source.dataset.src) {
+                    if (source.dataset.src) {
                         source.setAttribute("src", source.dataset.src);
                     }
                     video.load();
                 } else {
                     video.pause();
-                    video.removeAttribute("src");
                     source.removeAttribute("src");
                     video.load();
                 }
@@ -48,7 +382,7 @@
             }
         });
 
-        window.scrollTo({ top: 0, behavior: "instant" in window ? "instant" : "auto" });
+        window.scrollTo(0, 0);
     }
 
     document.querySelectorAll("video[data-click-to-play]").forEach((video) => {
@@ -65,11 +399,8 @@
     updateViewportHeight();
     activateView(getView());
 
-    window.addEventListener("resize", () => {
-        updateViewportHeight();
-    });
-
-    window.addEventListener("orientationchange", () => {
-        updateViewportHeight();
-    });
+    window.addEventListener("resize", updateViewportHeight);
+    window.addEventListener("orientationchange", updateViewportHeight);
 </script>
+</body>
+</html>
